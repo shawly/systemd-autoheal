@@ -55,3 +55,7 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     network_mode: none
+    # add COMPOSE_PROFILES=docker-mode to .env if you want to test the script only
+    # if not set the tests require the systemd service to be set up and running on your host!
+    profiles:
+      - docker-mode
