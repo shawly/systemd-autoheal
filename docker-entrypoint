@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 set -e
 # shellcheck disable=2039
@@ -8,13 +8,14 @@ DOCKER_SOCK=${DOCKER_SOCK:-/var/run/docker.sock}
 UNIX_SOCK=""
 CURL_TIMEOUT=${CURL_TIMEOUT:-30}
 WEBHOOK_URL=${WEBHOOK_URL:-""}
+CERT_PATH=${CERT_PATH:-/certs}
 
 # only use unix domain socket if no TCP endpoint is defined
 case "${DOCKER_SOCK}" in
   "tcp://"*) HTTP_ENDPOINT="$(echo ${DOCKER_SOCK} | sed 's#tcp://#https://#')"
-             CA="--cacert /certs/ca.pem"
-             CLIENT_KEY="--key /certs/client-key.pem"
-             CLIENT_CERT="--cert /certs/client-cert.pem"
+             CA="--cacert ${CERT_PATH}/ca.pem"
+             CLIENT_KEY="--key ${CERT_PATH}/client-key.pem"
+             CLIENT_CERT="--cert ${CERT_PATH}/client-cert.pem"
              ;;
   *)         HTTP_ENDPOINT="http://localhost"
              UNIX_SOCK="--unix-socket ${DOCKER_SOCK}"
