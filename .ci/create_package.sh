@@ -9,9 +9,6 @@ BUILD_DIR="$ROOT_DIR/build"
 # create build dir
 mkdir -p "$BUILD_DIR"
 
-# copy installer
-cp -v "$SCRIPT_DIR/install.sh" "$BUILD_DIR/install.sh"
-
 # change to root dir
 cd "$ROOT_DIR"
 
@@ -21,6 +18,9 @@ cp -v -t "$BUILD_DIR" \
     docker-entrypoint \
     README.md \
     LICENSE
+
+# copy installer
+cp -v "$ROOT_DIR/install" "$BUILD_DIR/install.sh"
 
 # convert the installer to local only
 sed -i '7 i# this makes the installer local only for release packages\nLOCAL_INSTALL=\"true\"' "$BUILD_DIR/install.sh"

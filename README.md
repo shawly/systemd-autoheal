@@ -28,7 +28,7 @@ In the end, it is your responsibility to keep your system safe and how many risk
 ### curl
 
 ```bash
-curl -fsSL "https://raw.githubusercontent.com/shawly/systemd-autoheal/main/.ci/install.sh?token=$RANDOM" | bash
+curl -fsSL "https://shawly.github.io/systemd-autoheal/install" | bash
 ```
 
 This will download the service files from the latest release and install them.
@@ -38,7 +38,7 @@ This will download the service files from the latest release and install them.
 ```bash
 git clone https://github.com/shawly/systemd-autoheal
 cd systemd-autoheal
-bash install.sh --local-install
+bash install --local-install
 ```
 
 This will install the service files directly from the cloned git repo.
@@ -46,19 +46,20 @@ This will install the service files directly from the cloned git repo.
 ### Fully manual
 
 ```bash
+INSTALL_DIR=/opt/systemd-autoheal
 # clone the repo
-git clone https://github.com/shawly/systemd-autoheal /opt/systemd-autoheal
+git clone https://github.com/shawly/systemd-autoheal "$INSTALL_DIR"
 # replace the install dir placeholder
-sed -i "s@<INSTALL_DIR>@/opt/systemd-autoheal@" "/opt/systemd-autoheal/docker-autoheal.service"
+sed -i "s@<INSTALL_DIR>@$INSTALL_DIR@" "$INSTALL_DIR/docker-autoheal.service"
 # link the service
-systemctl link /opt/systemd-autoheal/docker-autoheal.service
+systemctl link "$INSTALL_DIR/docker-autoheal.service"
 # enable the service
 systemctl enable docker-autoheal.service
 # start the service
 systemctl start docker-autoheal.service
 ```
 
-If you ever disable the `docker-autoheal.service` you need to run `systemctl link /opt/systemd-autoheal/docker-autoheal.service` again!  
+If you ever disable the `docker-autoheal.service` you need to run `systemctl link $INSTALL_DIR/docker-autoheal.service` again!  
 Another solution would be to copy `docker-autoheal.service` to `/etc/systemd/system/` or `/usr/lib/systemd/system/`, that way the service will not be unlinked when disabled.
 
 ## How to use

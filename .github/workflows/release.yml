@@ -24,7 +24,7 @@ jobs:
         run: |
           sudo mkdir -p /etc/conf.d
           sudo cp -vf tests/.env /etc/conf.d/docker-autoheal
-          bash .ci/install.sh --local-install
+          bash install --local-install
 
       - name: Run tests
         run: |
@@ -33,7 +33,7 @@ jobs:
 
       - name: Uninstall systemd service
         run: |
-          bash .ci/install.sh --local-install --uninstall
+          bash install --local-install --uninstall
 
   # Build release.
   build:
