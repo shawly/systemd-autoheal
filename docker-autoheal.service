@@ -1,0 +1,15 @@
+[Unit]
+Description=Docker Autoheal service
+Wants=docker.socket
+After=docker.service
+
+[Service]
+Type=simple
+Environment=AUTOHEAL_START_PERIOD=5
+EnvironmentFile=-/etc/conf.d/docker-autoheal
+ExecStart=bash -c "<INSTALL_DIR>/docker-entrypoint autoheal"
+KillSignal=SIGINT
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
