@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/shawly/systemd-docker-autoheal/compare/v1.1.0...v1.2.0) (2023-02-08)
+
+
+### Features
+
+* **project:** renamed project to systemd-docker-autoheal ([dfc5dcd](https://github.com/shawly/systemd-docker-autoheal/commit/dfc5dcd86472635cc644204533ef4c2ecdae2a3a))
+
 # [1.1.0](https://github.com/shawly/systemd-docker-autoheal/compare/v1.0.0...v1.1.0) (2023-02-08)
 
 
