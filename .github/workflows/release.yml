@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  push:
+    # Publish `main` as Docker `edge` image.
+    branches:
+      - main
+
+    # Publish `v1.2.3` tags as releases.
+    tags:
+      - v*
+
+  # Run tests for any PRs.
+  pull_request:
+
+jobs:
+  # Run tests.
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Install systemd service
+        run: |
+          sudo mkdir -p /etc/conf.d
+          sudo cp -vf tests/.env /etc/conf.d/docker-autoheal
+          bash install.sh --local-install
+
+      - name: Run tests
+        run: |
+          cd tests
+          bash tests.sh
+
+      - name: Uninstall systemd service
+        run: |
+          bash install.sh --local-install --uninstall
