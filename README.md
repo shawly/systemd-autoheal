@@ -25,15 +25,51 @@ In the end, it is your responsibility to keep your system safe and how many risk
 
 ## Installation
 
-### curl
+### Using a script
 
-```bash
-curl -fsSL "https://shawly.github.io/systemd-autoheal/install" | bash
+For `bash`, `zsh` and `fish` shells, there's an [automatic installation script](./install).
+
+First ensure that `curl`, `jq` and `unzip` are already installed on you operating system. Then execute:
+
+```sh
+curl -fsSL https://shawly.github.io/systemd-autoheal/install | bash
 ```
 
-This will download the service files from the latest release and install them.
+### Upgrade
 
-### git
+Upgrading `systemd-autoheal` is almost the same as installing it.
+
+### Parameters
+
+`--install-dir`
+
+Set a custom directory for the service files to be installed. The default is `/opt/systemd-autoheal`.
+
+`--uninstall`
+
+Removes the script and service from your system.
+
+`--local-install`
+
+Installs the files from the current working directory, this should only be used when using the manual installation methods.
+
+`--user`
+
+Installs the service as a user service, this can be used in conjunction with rootless Docker config.
+
+`--release`
+
+Installs a specific release.
+
+Example:
+
+```sh
+curl -fsSL https://shawly.github.io/systemd-autoheal/install | bash -s -- --install-dir "/usr/local/share/systemd-autoheal"
+```
+
+### Manually
+
+#### Using git and the installer
 
 ```bash
 git clone https://github.com/shawly/systemd-autoheal
@@ -41,28 +77,22 @@ cd systemd-autoheal
 bash install --local-install
 ```
 
-This will install the service files directly from the cloned git repo.
-
-### Fully manual
+#### Using git without the installer
 
 ```bash
 INSTALL_DIR=/opt/systemd-autoheal
-# clone the repo
 git clone https://github.com/shawly/systemd-autoheal "$INSTALL_DIR"
-# replace the install dir placeholder
 sed -i "s@<INSTALL_DIR>@$INSTALL_DIR@" "$INSTALL_DIR/docker-autoheal.service"
-# link the service
 systemctl link "$INSTALL_DIR/docker-autoheal.service"
-# enable the service
 systemctl enable docker-autoheal.service
-# start the service
 systemctl start docker-autoheal.service
 ```
 
-If you ever disable the `docker-autoheal.service` you need to run `systemctl link $INSTALL_DIR/docker-autoheal.service` again!  
+If you ever disable the `docker-autoheal.service` you need to run `systemctl link $INSTALL_DIR/docker-autoheal.service` again!
+
 Another solution would be to copy `docker-autoheal.service` to `/etc/systemd/system/` or `/usr/lib/systemd/system/`, that way the service will not be unlinked when disabled.
 
-## How to use
+## Usage
 
 ### Configuration
 
@@ -129,12 +159,7 @@ autoheal.stop.timeout=20        # Per containers override for stop timeout secon
 
 ## Testing
 
-```bash
-bash install.sh --install-dir "~/path/to/your/test/dir"
-
-cd watch-autoheal
-sudo ./tests.sh
-```
+Check the [documentation](./tests/README.md) in the tests folder.
 
 ## Known issues
 
