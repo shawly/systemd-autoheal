@@ -15,6 +15,12 @@ else
   echo "WARNING: Could not detect OS, installation will be unsupported!"
 fi
 
+if [ -n "$XDG_DATA_HOME" ]; then
+  CONFIG_DIR="$XDG_DATA_HOME/systemd-autoheal"
+else
+  CONFIG_DIR="$HOME/.local/share/systemd-autoheal"
+fi
+
 # Parse Flags
 parse_args() {
   while [[ $# -gt 0 ]]; do
@@ -23,6 +29,7 @@ parse_args() {
     case $key in
     -d | --install-dir)
       INSTALL_DIR="$2"
+      echo "WARNING: Setting a custom install dir can lead to unexpected behavior! Your installation dir is: $INSTALL_DIR"
       shift
       shift
       ;;
@@ -190,6 +197,14 @@ copy_files() {
   _sudo sed -i "s@<INSTALL_DIR>@$INSTALL_DIR@" "$INSTALL_DIR/docker-autoheal.service"
   _sudo chmod 755 "$INSTALL_DIR"
   _sudo chmod 755 "$INSTALL_DIR/docker-entrypoint"
+
+  echo "Saving installer config..."
+  mkdir -p "$CONFIG_DIR"
+  if [ -f "$CONFIG_DIR/installer_config" ]; then
+    echo "Found previous installer configuration, backing up to $CONFIG_DIR/installer_config.last!"
+    cp -f "$CONFIG_DIR/installer_config" "$CONFIG_DIR/installer_config.last"
+  fi
+  echo -e "INSTALL_DIR=$INSTALL_DIR\nUSER_SERVICE=$USER_SERVICE" | _sudo tee "$CONFIG_DIR/installer_config"
 }
 
 copy_systemd_unit() {
@@ -222,6 +237,7 @@ start_systemd_service() {
 
 uninstall_systemd_service() {
   echo "Uninstalling docker-autoheal.service..."
+  source "$CONFIG_DIR/installer_config" || echo "ERROR: Could not find installer config ($CONFIG_DIR/installer_config)! Did you even install the service?"
   set +e
   _systemctl disable docker-autoheal.service
   _systemctl stop docker-autoheal.service
@@ -233,11 +249,25 @@ uninstall_systemd_service() {
     _sudo rm "/usr/lib/systemd/system/docker-autoheal.service"
   fi
   _systemctl daemon-reload
+  rm -f "$CONFIG_DIR/installer_config"
   echo "Uninstalled docker-autoheal.service!"
   set -e
 }
 
+# SIGINT-handler
+term_handler() {
+  echo "SIGINT caught, exiting installer..."
+  exit 1
+}
+
+trap 'term_handler' SIGINT
+
 parse_args "$@"
+source "$CONFIG_DIR/installer_config" || true
+if [ "/" == "$INSTALL_DIR" ]; then
+  echo "ERROR: Your INSTALL_DIR=$INSTALL_DIR variable was set to your system root, what are you doing?"
+  exit 1
+fi
 if [ "$UNINSTALL" == "true" ]; then
   uninstall_systemd_service
   exit 0
