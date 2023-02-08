@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/shawly/systemd-autoheal/compare/v1.0.0...v1.1.0) (2023-02-08)
+
+
+### Features
+
+* **installer:** made installer more robust ([d58bfee](https://github.com/shawly/systemd-autoheal/commit/d58bfee600b1155d4a9bdf48b79204fadf888469))
+
 # 1.0.0 (2023-02-08)
 
 
