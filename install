@@ -6,7 +6,7 @@ set -e
 
 RELEASE="latest"
 OS="$(uname -s)"
-GITHUB="https://github.com/shawly/systemd-autoheal"
+GITHUB="https://github.com/shawly/systemd-docker-autoheal"
 ISSUE_URL="$GITHUB/issues"
 
 if [ -f "/etc/os-release" ]; then
@@ -16,9 +16,9 @@ else
 fi
 
 if [ -n "$XDG_DATA_HOME" ]; then
-  CONFIG_DIR="$XDG_DATA_HOME/systemd-autoheal"
+  CONFIG_DIR="$XDG_DATA_HOME/systemd-docker-autoheal"
 else
-  CONFIG_DIR="$HOME/.local/share/systemd-autoheal"
+  CONFIG_DIR="$HOME/.local/share/systemd-docker-autoheal"
 fi
 
 # Parse Flags
@@ -65,11 +65,11 @@ parse_args() {
 
   if [ -z "$INSTALL_DIR" ]; then
     if [ "$USER_SERVICE" == "true" ] && [ -n "$XDG_DATA_HOME" ]; then
-      INSTALL_DIR="$XDG_DATA_HOME/systemd-autoheal"
+      INSTALL_DIR="$XDG_DATA_HOME/systemd-docker-autoheal"
     elif [ "$USER_SERVICE" == "true" ]; then
-      INSTALL_DIR="$HOME/.local/share/systemd-autoheal"
+      INSTALL_DIR="$HOME/.local/share/systemd-docker-autoheal"
     else
-      INSTALL_DIR="/opt/systemd-autoheal"
+      INSTALL_DIR="/opt/systemd-docker-autoheal"
     fi
   fi
 }
@@ -154,7 +154,7 @@ _systemctl() {
 }
 
 download_autoheal() {
-  FILENAME=systemd-autoheal
+  FILENAME=systemd-docker-autoheal
   if [ "$RELEASE" = "latest" ]; then
     URL="$GITHUB/releases/latest/download/$FILENAME.zip"
   else

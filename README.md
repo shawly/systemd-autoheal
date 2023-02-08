@@ -1,6 +1,6 @@
 # systemd Docker Autoheal Service
 
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/shawly/systemd-autoheal/release.yml) ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/shawly/systemd-autoheal) ![GitHub all releases](https://img.shields.io/github/downloads/shawly/systemd-autoheal/total)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/shawly/systemd-docker-autoheal/release.yml) ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/shawly/systemd-docker-autoheal) ![GitHub all releases](https://img.shields.io/github/downloads/shawly/systemd-docker-autoheal/total)
 
 Monitor and restart unhealthy docker containers, but with systemd!
 
@@ -32,18 +32,18 @@ For `bash`, `zsh` and `fish` shells, there's an [automatic installation script](
 First ensure that `curl`, `jq` and `unzip` are already installed on you operating system. Then execute:
 
 ```sh
-curl -fsSL https://shawly.github.io/systemd-autoheal/install | bash
+curl -fsSL https://shawly.github.io/systemd-docker-autoheal/install | bash
 ```
 
 #### Upgrade
 
-Upgrading `systemd-autoheal` is almost the same as installing it.
+Upgrading `systemd-docker-autoheal` is almost the same as installing it.
 
 #### Parameters
 
 `--install-dir`
 
-Set a custom directory for the service files to be installed. The default is `/opt/systemd-autoheal`.
+Set a custom directory for the service files to be installed. The default is `/opt/systemd-docker-autoheal`.
 
 `--uninstall`
 
@@ -64,7 +64,7 @@ Installs a specific release.
 Example:
 
 ```sh
-curl -fsSL https://shawly.github.io/systemd-autoheal/install | bash -s -- --install-dir "/usr/local/share/systemd-autoheal"
+curl -fsSL https://shawly.github.io/systemd-docker-autoheal/install | bash -s -- --install-dir "/usr/local/share/systemd-docker-autoheal"
 ```
 
 #### Manually
@@ -72,16 +72,16 @@ curl -fsSL https://shawly.github.io/systemd-autoheal/install | bash -s -- --inst
 ##### Using git and the installer
 
 ```bash
-git clone https://github.com/shawly/systemd-autoheal
-cd systemd-autoheal
+git clone https://github.com/shawly/systemd-docker-autoheal
+cd systemd-docker-autoheal
 bash install --local-install
 ```
 
 ##### Using git without the installer
 
 ```bash
-INSTALL_DIR=/opt/systemd-autoheal
-git clone https://github.com/shawly/systemd-autoheal "$INSTALL_DIR"
+INSTALL_DIR=/opt/systemd-docker-autoheal
+git clone https://github.com/shawly/systemd-docker-autoheal "$INSTALL_DIR"
 sed -i "s@<INSTALL_DIR>@$INSTALL_DIR@" "$INSTALL_DIR/docker-autoheal.service"
 sudo systemctl link "$INSTALL_DIR/docker-autoheal.service"
 sudo systemctl enable docker-autoheal.service
@@ -99,8 +99,8 @@ So you still want to use this script within a container? Well, it's your choice!
 You need to build the image yourself though, since I won't provide an image. I will never provide an image for applications that use the `docker.socket` so don't ask.
 
 ```
-git clone https://github.com/shawly/systemd-autoheal
-cd systemd-autoheal
+git clone https://github.com/shawly/systemd-docker-autoheal
+cd systemd-docker-autoheal
 sudo docker build -t shawly/autoheal:local .
 sudo docker run -d
     --name autoheal \
@@ -184,4 +184,4 @@ If your current user belongs to the `docker` group, the service cannot manage co
 Therefore you need to start your stacks as `root` user (e.g. with `sudo`).
 
 It is not recommended to add your user to the `docker` group anyway as it is insecure.  
-So if you want to use `systemd-autoheal` because of security concerns, start by removing your user from the `docker` group! Or use [docker rootless](https://docs.docker.com/engine/security/rootless/), your choice.
+So if you want to use `systemd-docker-autoheal` because of security concerns, start by removing your user from the `docker` group! Or use [docker rootless](https://docs.docker.com/engine/security/rootless/), your choice.

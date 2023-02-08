@@ -26,4 +26,4 @@ cp -v "$ROOT_DIR/install" "$BUILD_DIR/install.sh"
 sed -i '7 i# this makes the installer local only for release packages\nLOCAL_INSTALL=\"true\"' "$BUILD_DIR/install.sh"
 
 # create package
-zip -j -o systemd-autoheal.zip -r "$BUILD_DIR"
+zip -j -o systemd-docker-autoheal.zip -r "$BUILD_DIR"
