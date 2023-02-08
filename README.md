@@ -1,5 +1,7 @@
 # systemd Docker Autoheal Service
 
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/shawly/systemd-autoheal/release.yml) ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/shawly/systemd-autoheal) ![GitHub all releases](https://img.shields.io/github/downloads/shawly/systemd-autoheal/total)
+
 Monitor and restart unhealthy docker containers, but with systemd!
 
 This functionality was proposed to be included with the addition of `HEALTHCHECK`, however didn't make the cut.
@@ -26,7 +28,7 @@ In the end, it is your responsibility to keep your system safe and how many risk
 ### curl
 
 ```bash
-curl -fsSL "https://raw.githubusercontent.com/shawly/systemd-autoheal/main/install.sh?token=$RANDOM" | bash
+curl -fsSL "https://raw.githubusercontent.com/shawly/systemd-autoheal/main/.ci/install.sh?token=$RANDOM" | bash
 ```
 
 This will download the service files from the latest release and install them.
