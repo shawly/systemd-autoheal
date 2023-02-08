@@ -35,11 +35,11 @@ First ensure that `curl`, `jq` and `unzip` are already installed on you operatin
 curl -fsSL https://shawly.github.io/systemd-autoheal/install | bash
 ```
 
-### Upgrade
+#### Upgrade
 
 Upgrading `systemd-autoheal` is almost the same as installing it.
 
-### Parameters
+#### Parameters
 
 `--install-dir`
 
@@ -67,9 +67,9 @@ Example:
 curl -fsSL https://shawly.github.io/systemd-autoheal/install | bash -s -- --install-dir "/usr/local/share/systemd-autoheal"
 ```
 
-### Manually
+#### Manually
 
-#### Using git and the installer
+##### Using git and the installer
 
 ```bash
 git clone https://github.com/shawly/systemd-autoheal
@@ -77,20 +77,37 @@ cd systemd-autoheal
 bash install --local-install
 ```
 
-#### Using git without the installer
+##### Using git without the installer
 
 ```bash
 INSTALL_DIR=/opt/systemd-autoheal
 git clone https://github.com/shawly/systemd-autoheal "$INSTALL_DIR"
 sed -i "s@<INSTALL_DIR>@$INSTALL_DIR@" "$INSTALL_DIR/docker-autoheal.service"
-systemctl link "$INSTALL_DIR/docker-autoheal.service"
-systemctl enable docker-autoheal.service
-systemctl start docker-autoheal.service
+sudo systemctl link "$INSTALL_DIR/docker-autoheal.service"
+sudo systemctl enable docker-autoheal.service
+sudo systemctl start docker-autoheal.service
 ```
 
 If you ever disable the `docker-autoheal.service` you need to run `systemctl link $INSTALL_DIR/docker-autoheal.service` again!
 
 Another solution would be to copy `docker-autoheal.service` to `/etc/systemd/system/` or `/usr/lib/systemd/system/`, that way the service will not be unlinked when disabled.
+
+##### Using docker
+
+So you still want to use this script within a container? Well, it's your choice!
+
+You need to build the image yourself though, since I won't provide an image. I will never provide an image for applications that use the `docker.socket` so don't ask.
+
+```
+git clone https://github.com/shawly/systemd-autoheal
+cd systemd-autoheal
+sudo docker build -t shawly/autoheal:local .
+sudo docker run -d
+    --name autoheal \
+    --restart=always \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    shawly/autoheal:local
+```
 
 ## Usage
 

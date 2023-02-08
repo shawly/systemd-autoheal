@@ -1,8 +1,2 @@
-.github
-.gitignore
-.dockerignore
-Dockerfile
-tests
-install.sh
-docker-autoheal.service
-README.md
+*
+!docker-entrypoint
