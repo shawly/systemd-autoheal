@@ -9,6 +9,10 @@ This systemd service is a stand-in till there is native support for `--exit-on-u
 
 This is a systemd service that uses the script from [willfarrell/docker-autoheal](https://github.com/willfarrell/docker-autoheal), but with an installation script to make things as easy as using docker run or compose.
 
+## Archived
+
+No time and patience for maintaining bash scripts, sorry.
+
 ## Why use systemd over a Docker image?
 
 The main reason to use systemd over a Docker image is that you don't need to expose your `docker.socket` to any container, essentially giving a container access to **all** your other containers.
